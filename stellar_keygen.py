@@ -95,8 +95,6 @@ def human_account_public(s):
 
 if __name__ == '__main__':
 
-#		seed = get_seed_generic("masterpassphrase")
-
 	if len(sys.argv) > 1:
 		seed = get_seed_generic(sys.argv[1])
 	else:
