@@ -5,9 +5,9 @@ import sys
 import os
 
 
-VER_SEED = 33
-VER_ACCOUNT_ID = 0
-VER_ACCOUNT_PUBLIC = 67
+VER_SEED = chr(33)
+VER_ACCOUNT_ID = chr(0)
+VER_ACCOUNT_PUBLIC = chr(67)
 
 
 def b58encode(v):
@@ -19,15 +19,15 @@ def b58encode(v):
 
 	result = ''
 	while long_value >= __b58base:
-		div, mod = divmod(long_value, __b58base)
-		result = result + __b58chars[mod]
-		long_value = div
-	result = result + __b58chars[long_value]
+		long_value, mod = divmod(long_value, __b58base)
+		result += __b58chars[mod]
+	result += __b58chars[long_value]
 
-	if (v[1] == chr(0)):
-		result = result + __b58chars[0]
+	z = 0
+	while v[z] == '\0':
+		z += 1
 
-	return result[::-1]
+	return __b58chars[0]*z + result[::-1]
 
 
 def get_seed_generic(s):
@@ -69,10 +69,10 @@ def four_byte_hash256(s):
 	return sha256hash(s)[0:4]
 
 
-def to_string(type, s):
+def to_string(ver, value):
 
-	s = chr(type) + s
-	s = chr(0) + s + four_byte_hash256(s)
+	s = ver + value
+	s += four_byte_hash256(s)
 	return b58encode(s)
 
 #-------------------------------------------------------------------------------
